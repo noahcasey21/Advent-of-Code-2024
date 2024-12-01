@@ -2,12 +2,7 @@ def smallest_pairs(file : str) -> int:
     f = open(file, 'r')
     data_list = f.readlines()
 
-    left = []
-    right = []
-    for row in data_list:
-        l = row.split()
-        left.append(int(l[0]))
-        right.append(int(l[1]))
+    left, right = parse_file_data(data_list)
 
     if len(left) != len(right):
         return -1
@@ -23,6 +18,39 @@ def smallest_pairs(file : str) -> int:
         sol += (n)
 
     return sol
+
+def similarity_score(file : str) -> int:
+    f = open(file, 'r')
+    data_list = f.readlines()
+
+    left, right = parse_file_data(data_list)
+
+    if len(left) != len(right):
+        return -1
+
+    ss = 0
+    for val in left:
+        right_count = count_occurances(val, right)
+        ss += (val * right_count)
+
+    return ss
+
+def count_occurances(find : int, vals : list) -> int:
+    a = 0
+    for val in vals:
+        if val == find:
+            a += 1
+
+    return a
+
+def parse_file_data(data : list) -> tuple:
+    left = []
+    right = []
+    for row in data:
+        l = row.split()
+        left.append(int(l[0]))
+        right.append(int(l[1]))
+    return left, right
 
 def heap_sort(a : list) -> list:
     '''
@@ -44,4 +72,10 @@ if __name__ == '__main__':
     if sol == -1:
         'An error has occured'
     else:
-        print(f'The solution is {sol}')
+        print(f'The distance score is {sol}')
+
+    sol1 = similarity_score(f)
+    if sol1 == -1:
+        'An error has occured'
+    else:
+        print(f'The similarity score is {sol1}')
